@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alberto Godoy Photography</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Tenor+Sans&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --cream: #f5f2ed;
+    --bone: #e8e3db;
+    --dark: #1a1814;
+    --mid: #4a4540;
+    --muted: #9a948c;
+    --accent: #c4a882;
+    --accent-dark: #8a6e4e;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: var(--cream);
+    font-family: 'Tenor Sans', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed;
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 32px; height: 32px;
+    border: 1px solid rgba(196,168,130,0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.15s ease;
+  }
+  body:hover .cursor { opacity: 1; }
+
+  /* Nav */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 2rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    mix-blend-mode: normal;
+  }
+  nav::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(26,24,20,0.9) 0%, transparent 100%);
+    pointer-events: none;
+  }
+  .nav-logo {
+    text-decoration: none;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+  }
+  .nav-logo svg { height: 48px; width: auto; }
+  .nav-links {
+    display: flex;
+    gap: 3rem;
+    list-style: none;
+    position: relative;
+    z-index: 1;
+  }
+  .nav-links a {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  .nav-links a:hover { color: var(--cream); }
+
+  /* Hero */
+  .hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 4rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-photo {
+    position: absolute;
+    inset: 0;
+    background: url('hero.jpg') center center / cover no-repeat;
+    transform: scale(1.04);
+    animation: heroZoom 12s ease-out forwards;
+  }
+  @keyframes heroZoom {
+    from { transform: scale(1.04); }
+    to { transform: scale(1.0); }
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to right, rgba(10,8,6,0.72) 0%, rgba(10,8,6,0.35) 60%, rgba(10,8,6,0.15) 100%),
+      linear-gradient(to top, rgba(10,8,6,0.8) 0%, transparent 50%);
+  }
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(196,168,130,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(196,168,130,0.02) 1px, transparent 1px);
+    background-size: 80px 80px;
+  }
+  .hero-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(8rem, 18vw, 18rem);
+    font-weight: 300;
+    line-height: 0.85;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(196,168,130,0.15);
+    position: absolute;
+    right: -2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    user-select: none;
+    opacity: 0;
+    animation: fadeUp 1.2s ease 0.3s forwards;
+  }
+  .hero-eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.1s forwards;
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 7vw, 6.5rem);
+    font-weight: 300;
+    line-height: 1.0;
+    letter-spacing: -0.01em;
+    max-width: 700px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.25s forwards;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .hero-sub {
+    margin-top: 2rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.4s forwards;
+  }
+  .hero-scroll {
+    position: absolute;
+    bottom: 3rem;
+    right: 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    opacity: 0;
+    animation: fadeIn 1s ease 1s forwards;
+  }
+  .hero-scroll span {
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+    writing-mode: vertical-rl;
+  }
+  .scroll-line {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+
+  /* Section base */
+  section { padding: 8rem 4rem; }
+  .section-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 4rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .section-label::after {
+    content: '';
+    height: 1px;
+    width: 60px;
+    background: var(--accent-dark);
+    opacity: 0.5;
+  }
+
+  /* Portfolio grid */
+  .portfolio-section { background: var(--dark); }
+  .portfolio-intro {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 5rem;
+    gap: 3rem;
+  }
+  .portfolio-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    max-width: 500px;
+  }
+  .portfolio-title em { font-style: italic; color: var(--accent); }
+  .portfolio-desc {
+    max-width: 300px;
+    font-size: 0.8rem;
+    line-height: 1.8;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+
+  /* Category filter */
+  .filter-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+  }
+  .filter-btn {
+    padding: 0.5rem 1.5rem;
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border: 1px solid rgba(196,168,130,0.2);
+    background: transparent;
+    color: var(--muted);
+    cursor: none;
+    transition: all 0.3s ease;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(196,168,130,0.05);
+  }
+
+  /* Masonry-style grid */
+  .gallery-grid {
+    columns: 3;
+    column-gap: 1.5rem;
+  }
+  .gallery-item {
+    break-inside: avoid;
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    cursor: none;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .gallery-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .gallery-item img {
+    width: 100%;
+    display: block;
+    transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    filter: brightness(0.88) saturate(0.9);
+  }
+  .gallery-item:hover img {
+    transform: scale(1.04);
+    filter: brightness(1) saturate(1);
+  }
+  .gallery-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(26,24,20,0.85) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.5rem;
+  }
+  .gallery-item:hover .gallery-overlay { opacity: 1; }
+  .gallery-overlay-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: var(--cream);
+    letter-spacing: 0.05em;
+  }
+  .gallery-overlay-cat {
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-top: 0.25rem;
+  }
+
+  /* Placeholder images using CSS art */
+  .img-placeholder {
+    width: 100%;
+    display: block;
+    transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    filter: brightness(0.88) saturate(0.9);
+    position: relative;
+    overflow: hidden;
+  }
+  .gallery-item:hover .img-placeholder {
+    transform: scale(1.04);
+    filter: brightness(1) saturate(1);
+  }
+
+  /* About strip */
+  .about-strip {
+    background: #141210;
+    padding: 8rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8rem;
+    align-items: center;
+  }
+  .about-portrait {
+    position: relative;
+  }
+  .about-portrait-img {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: #2a2620;
+    position: relative;
+    overflow: hidden;
+  }
+  .about-portrait-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(196,168,130,0.08) 0%, transparent 60%);
+  }
+  .about-portrait-frame {
+    position: absolute;
+    top: 1.5rem; right: -1.5rem;
+    bottom: -1.5rem; left: 1.5rem;
+    border: 1px solid rgba(196,168,130,0.2);
+    pointer-events: none;
+  }
+  .about-content {}
+  .about-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 300;
+    line-height: 1.15;
+    margin-bottom: 2rem;
+  }
+  .about-title em { font-style: italic; color: var(--accent); }
+  .about-text {
+    font-size: 0.82rem;
+    line-height: 2;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+  }
+  .about-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 3rem;
+    padding-top: 3rem;
+    border-top: 1px solid rgba(196,168,130,0.1);
+  }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 0.5rem;
+  }
+
+  /* Services */
+  .services-section { background: var(--dark); }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: rgba(196,168,130,0.1);
+    border: 1px solid rgba(196,168,130,0.1);
+    margin-top: 4rem;
+  }
+  .service-item {
+    background: var(--dark);
+    padding: 3rem 2rem;
+    transition: background 0.3s ease;
+    cursor: none;
+  }
+  .service-item:hover { background: #1f1d19; }
+  .service-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 300;
+    color: rgba(196,168,130,0.2);
+    line-height: 1;
+    margin-bottom: 1.5rem;
+  }
+  .service-title {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--cream);
+    margin-bottom: 1rem;
+  }
+  .service-desc {
+    font-size: 0.78rem;
+    line-height: 1.8;
+    color: var(--muted);
+  }
+
+  /* Contact */
+  .contact-section {
+    background: #0e0d0b;
+    text-align: center;
+    padding: 10rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-bg-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20vw;
+    font-weight: 300;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(196,168,130,0.04);
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+  }
+  .contact-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+  .contact-title em { font-style: italic; color: var(--accent); }
+  .contact-sub {
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 3rem;
+    position: relative;
+  }
+  .contact-btn {
+    display: inline-block;
+    padding: 1.1rem 3.5rem;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    cursor: none;
+  }
+  .contact-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    transform: translateX(-100%);
+    transition: transform 0.4s ease;
+    z-index: -1;
+  }
+  .contact-btn:hover {
+    color: var(--dark);
+  }
+  .contact-btn:hover::before { transform: translateX(0); }
+
+  /* Footer */
+  footer {
+    background: #0a0908;
+    padding: 2.5rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(196,168,130,0.08);
+  }
+  footer p {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* Divider */
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(196,168,130,0.2), transparent);
+    margin: 0 4rem;
+  }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes scrollLine {
+    0%, 100% { transform: scaleY(1); opacity: 1; }
+    50% { transform: scaleY(0.3); opacity: 0.3; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Nav -->
+<nav>
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 200 64" xmlns="http://www.w3.org/2000/svg">
+      <text x="100" y="38" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="38" font-weight="300" font-style="italic" fill="#c4a882" letter-spacing="-1">AG</text>
+      <path d="M14 46 L38 26 L54 36 L72 18 L100 30 L128 14 L148 26 L166 34 L186 46" fill="none" stroke="rgba(196,168,130,0.5)" stroke-width="0.8" stroke-linejoin="round"/>
+      <line x1="14" y1="46" x2="186" y2="46" stroke="rgba(196,168,130,0.15)" stroke-width="0.5"/>
+      <text x="100" y="58" text-anchor="middle" font-family="'Tenor Sans', sans-serif" font-size="6" fill="#e8e2da" letter-spacing="4">ALBERTO GODOY</text>
+    </svg>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-photo"></div>
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-number">IV</div>
+  <p class="hero-eyebrow">Photography &amp; Visual Storytelling</p>
+  <h1 class="hero-title">Moments <em>crafted</em><br>in light &amp; shadow</h1>
+  <p class="hero-sub">Weddings · Concerts · Portraits · Landscapes · Sports</p>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Portfolio -->
+<section class="portfolio-section" id="portfolio">
+  <div class="section-label">Selected Work</div>
+  <div class="portfolio-intro">
+    <h2 class="portfolio-title reveal">Work that <em>speaks</em><br>without words</h2>
+    <p class="portfolio-desc reveal reveal-delay-2">A curated collection spanning weddings, live music, portraiture, sport, and the natural world. Each image is a story told in a single frame.</p>
+  </div>
+
+  <div class="filter-row reveal">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="wedding">Weddings</button>
+    <button class="filter-btn" data-filter="concert">Concerts</button>
+    <button class="filter-btn" data-filter="portrait">Portraits</button>
+    <button class="filter-btn" data-filter="sports">Sports</button>
+    <button class="filter-btn" data-filter="landscape">Landscape</button>
+  </div>
+
+  <div class="gallery-grid" id="galleryGrid">
+
+    <!-- Wedding tall -->
+    <div class="gallery-item" data-cat="wedding">
+      <svg class="img-placeholder" viewBox="0 0 400 560" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="560" fill="#2a2420"/>
+        <rect x="0" y="0" width="400" height="560" fill="url(#w1)"/>
+        <defs>
+          <radialGradient id="w1" cx="60%" cy="30%">
+            <stop offset="0%" stop-color="#6b5a4e" stop-opacity="0.8"/>
+            <stop offset="100%" stop-color="#1a1510" stop-opacity="1"/>
+          </radialGradient>
+        </defs>
+        <ellipse cx="200" cy="200" rx="80" ry="100" fill="rgba(196,168,130,0.08)"/>
+        <rect x="170" y="320" width="60" height="180" fill="rgba(196,168,130,0.06)"/>
+        <text x="200" y="490" text-anchor="middle" fill="rgba(196,168,130,0.25)" font-family="serif" font-size="11" letter-spacing="3">WEDDING</text>
+      </svg>
+      <div class="gallery-overlay">
+        <div class="gallery-overlay-title">The Golden Hour Vow</div>
+        <div class="gallery-overlay-cat">Wedding</div>
+      </div>
+    </div>
+
+    <!-- Concert square -->
+    <div class="gallery-item" data-cat="concert">
+      <svg class="img-placeholder" viewBox="0 0 400 380" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="380" fill="#18120a"/>
+        <defs>
+          <radialGradient id="c1" cx="50%" cy="70%">
+            <stop offset="0%" stop-color="#c4803a" stop-opacity="0.6"/>
+            <stop offset="60%" stop-color="#8b3a1a" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#0a0806" stop-opacity="1"/>
+          </radialGradient>
+        </defs>
+        <rect width="400" height="380" fill="url(#c1)"/>
+        <line x1="160" y1="0" x2="200" y2="380" stroke="rgba(255,180,60,0.08)" stroke-width="40"/>
+        <line x1="200" y1="0" x2="220" y2="380" stroke="rgba(255,140,30,0.06)" stroke-width="20"/>
+        <ellipse cx="200" cy="250" rx="30" ry="60" fill="rgba(255,200,100,0.1)"/>
+        <text x="200" y="350" text-anchor="middle" fill="rgba(255,180,80,0.3)" font-family="serif" font-size="11" letter-spacing="3">LIVE MUSIC</text>
+      </svg>
+      <div class="gallery-overlay">
+        <div class="gallery-overlay-title">Stage Fire, Terminal West</div>
+        <div class="gallery-overlay-cat">Concert</div>
+      </div>
+    </div>
+
+    <!-- Portrait medium -->
+    <div class="gallery-item" data-cat="portrait">
+      <svg class="img-placeholder" viewBox="0 0 400 460" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="460" fill="#201c18"/>
+        <defs>
+          <radialGradient id="p1" cx="55%" cy="40%">
+            <stop offset="0%" stop-color="#8a7060" stop-opacity="0.7"/>
+            <stop offset="100%" stop-color="#141210" stop-opacity="1"/>
+          </radialGradient>
+        </defs>
+        <rect width="400" height="460" fill="url(#p1)"/>
+        <ellipse cx="200" cy="170" rx="65" ry="80" fill="rgba(196,168,130,0.1)"/>
+        <rect x="155" y="270" width="90" height="140" fill="rgba(196,168,130,0.07)"/>
+        <text x="200" y="430" text-anchor="middle" fill="rgba(196,168,130,0.25)" font-family="serif" font-size="11" letter-spacing="3">PORTRAIT</text>
+      </svg>
+      <div class="gallery-overlay">
+        <div class="gallery-overlay-title">Natural Light Study</div>
+        <div class="gallery-overlay-cat">Portrait</div>
+      </div>
+    </div>
+
+    <!-- Landscape wide -->
+    <div class="gallery-item" data-cat="landscape">
+      <svg class="img-placeholder" viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="l1" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1a2a3a"/>
+            <stop offset="50%" stop-color="#c4703a" stop-opacity="0.4"/>
+            <stop offset="100%" stop-color="#1a1208"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="280" fill="#101820"/>
+        <rect width="400" height="280" fill="url(#l1)"/>
+        <path d="M0 200 Q100 160 200 180 Q300 200 400 170 L400 280 L0 280 Z" fill="rgba(10,8,5,0.8)"/>
+        <path d="M0 220 Q80 200 160 210 Q280 225 400 195 L400 280 L0 280 Z" fill="rgba(5,4,3,0.9)"/>
+        <ellipse cx="300" cy="80" rx="40" ry="40" fill="rgba(255,160,60,0.15)"/>
+        <text x="200" y="260" text-anchor="middle" fill="rgba(196,168,130,0.2)" font-family="serif" font-size="11" letter-spacing="3">LANDSCAPE</text>
+      </svg>
+      <div class="gallery-overlay">
+        <div class="gallery-overlay-title">Blue Ridge at Dusk</div>
+        <div class="gallery-overlay-cat">Landscape</div>
+      </div>
+    </div>
+
+    <!-- Sports tall -->
+    <div class="gallery-item" data-cat="sports">
+      <svg class="img-placeholder" viewBox="0 0 400 520" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="520" fill="#111418"/>
+        <defs>
+          <radialGradient id="s1" cx="50%" cy="50%">
+            <stop offset="0%" stop-color="#3a5a7a" stop-opacity="0.5"/>
+            <stop offset="100%" stop-color="#080a0e" stop-opacity="1"/>
+          </radialGradient>
+        </defs>
+        <rect width="400" height="520" fill="url(#s1)"/>
+        <line x1="200" y1="0" x2="160" y2="520" stroke="rgba(100,160,220,0.06)" stroke-width="60"/>
+        <ellipse cx="200" cy="260" rx="50" ry="120" fill="rgba(100,160,220,0.07)"/>
+        <text x="200" y="490" text-anchor="middle" fill="rgba(100,160,220,0.25)" font-family="serif" font-size="11" letter-spacing="3">SPORTS</text>
+      </svg>
+      <div class="gallery-overlay">
+        <div class="gallery-overlay-title">Full Sprint, Game 7</div>
+        <div class="gallery-overlay-cat">Sports</div>
+      </div>
+    </div>
+
+    <!-- Wedding medium -->
+    <div class="gallery-item" data-cat="wedding">
+      <svg class="img-placeholder" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="400" fill="#221e1a"/>
+        <defs>
+          <radialGradient id="w2" cx="40%" cy="60%">
+            <stop offset="0%" stop-color="#7a6050" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#120e0a" stop-opacity="1"/>
+          </radialGradient>
+        </defs>
+        <rect width="400" height="400" fill="url(#w2)"/>
+        <ellipse cx="150" cy="200" rx="55" ry="70" fill="rgba(196,168,130,0.09)"/>
+        <ellipse cx="250" cy="200" rx="55" ry="70" fill="rgba(196,168,130,0.07)"/>
+        <text x="200" y="375" text-anchor="middle" fill="rgba(196,168,130,0.25)" font-family="serif" font-size="11" letter-spacing="3">WEDDING</text>
+      </svg>
+      <div class="gallery-overlay">
+        <div class="gallery-overlay-title">First Look, Forest Chapel</div>
+        <div class="gallery-overlay-cat">Wedding</div>
+      </div>
+    </div>
+
+    <!-- Concert tall -->
+    <div class="gallery-item" data-cat="concert">
+      <svg class="img-placeholder" viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="500" fill="#100a06"/>
+        <defs>
+          <radialGradient id="c2" cx="50%" cy="80%">
+            <stop offset="0%" stop-color="#6a2090" stop-opacity="0.7"/>
+            <stop offset="50%" stop-color="#c01860" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#050305" stop-opacity="1"/>
+          </radialGradient>
+        </defs>
+        <rect width="400" height="500" fill="url(#c2)"/>
+        <ellipse cx="200" cy="350" rx="120" ry="60" fill="rgba(180,60,200,0.08)"/>
+        <line x1="200" y1="0" x2="200" y2="300" stroke="rgba(220,100,255,0.1)" stroke-width="2"/>
+        <text x="200" y="470" text-anchor="middle" fill="rgba(200,100,255,0.3)" font-family="serif" font-size="11" letter-spacing="3">CONCERT</text>
+      </svg>
+      <div class="gallery-overlay">
+        <div class="gallery-overlay-title">Purple Haze, The Masquerade</div>
+        <div class="gallery-overlay-cat">Concert</div>
+      </div>
+    </div>
+
+    <!-- Landscape medium -->
+    <div class="gallery-item" data-cat="landscape">
+      <svg class="img-placeholder" viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="l2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0a1428"/>
+            <stop offset="40%" stop-color="#1a3050" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#050810"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="360" fill="#080c18"/>
+        <rect width="400" height="360" fill="url(#l2)"/>
+        <path d="M0 240 Q200 180 400 220 L400 360 L0 360 Z" fill="#050408"/>
+        <text x="200" y="340" text-anchor="middle" fill="rgba(100,140,200,0.2)" font-family="serif" font-size="11" letter-spacing="3">LANDSCAPE</text>
+      </svg>
+      <div class="gallery-overlay">
+        <div class="gallery-overlay-title">Midnight Reflection</div>
+        <div class="gallery-overlay-cat">Landscape</div>
+      </div>
+    </div>
+
+    <!-- Portrait square -->
+    <div class="gallery-item" data-cat="portrait">
+      <svg class="img-placeholder" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="400" fill="#1c1814"/>
+        <defs>
+          <radialGradient id="p2" cx="45%" cy="35%">
+            <stop offset="0%" stop-color="#9a8060" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#100c08" stop-opacity="1"/>
+          </radialGradient>
+        </defs>
+        <rect width="400" height="400" fill="url(#p2)"/>
+        <ellipse cx="195" cy="160" rx="60" ry="72" fill="rgba(196,168,130,0.12)"/>
+        <rect x="155" y="255" width="80" height="100" fill="rgba(196,168,130,0.08)"/>
+        <text x="200" y="375" text-anchor="middle" fill="rgba(196,168,130,0.25)" font-family="serif" font-size="11" letter-spacing="3">PORTRAIT</text>
+      </svg>
+      <div class="gallery-overlay">
+        <div class="gallery-overlay-title">Window Light Series</div>
+        <div class="gallery-overlay-cat">Portrait</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- About -->
+<section class="about-strip" id="about">
+  <div class="about-portrait reveal">
+    <div class="about-portrait-img">
+      <svg viewBox="0 0 400 533" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="533" fill="#2a2420"/>
+        <defs>
+          <radialGradient id="ab1" cx="50%" cy="35%">
+            <stop offset="0%" stop-color="#6a5040" stop-opacity="0.8"/>
+            <stop offset="100%" stop-color="#181410" stop-opacity="1"/>
+          </radialGradient>
+        </defs>
+        <rect width="400" height="533" fill="url(#ab1)"/>
+        <ellipse cx="200" cy="200" rx="80" ry="100" fill="rgba(196,168,130,0.1)"/>
+        <rect x="160" y="320" width="80" height="180" fill="rgba(196,168,130,0.07)"/>
+        <text x="200" y="500" text-anchor="middle" fill="rgba(196,168,130,0.2)" font-family="serif" font-size="11" letter-spacing="3">ALBERTO GODOY</text>
+      </svg>
+    </div>
+    <div class="about-portrait-frame"></div>
+  </div>
+  <div class="about-content">
+    <div class="section-label reveal">About Me</div>
+    <h2 class="about-title reveal reveal-delay-1">Raised on mountains,<br><em>guided by light</em></h2>
+    <p class="about-text reveal reveal-delay-2">I grew up in Montana, surrounded by some of the most breathtaking scenery in the country. My grandfather and my dad were always behind a camera or a camcorder — documenting life, chasing landscapes, preserving moments. That instinct was passed down to me before I ever knew what to call it.</p>
+    <p class="about-text reveal reveal-delay-2">When my dad was at work, I'd quietly pick up his camera and head outside. The mountains were my first subject and my first teacher. I learned to read the sky, to wait for the right moment, to let the light do the heavy lifting. That philosophy never left me — whether I'm shooting a first dance, a concert stage, or a portrait in an open field, I still let light lead the way.</p>
+    <p class="about-text reveal reveal-delay-2">Now based in Atlanta, I shoot professionally and pour everything into building something of my own — a business that carries the same honesty and care my family put into every photo they ever took. I shoot on Nikon Z-series mirrorless and edit with a natural, true-to-life touch — no heavy filters, no manufactured moments. Just you, the light, and the real thing.</p>
+    <div class="about-stats reveal reveal-delay-3">
+      <div>
+        <div class="stat-num">MT</div>
+        <div class="stat-label">Raised In</div>
+      </div>
+      <div>
+        <div class="stat-num">ATL</div>
+        <div class="stat-label">Based In</div>
+      </div>
+      <div>
+        <div class="stat-num">Z6</div>
+        <div class="stat-label">Primary Body</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Services -->
+<section class="services-section" id="services">
+  <div class="section-label reveal">What I Offer</div>
+  <h2 class="portfolio-title reveal" style="margin-bottom:0;">Every occasion,<br><em>beautifully captured</em></h2>
+  <div class="services-grid">
+    <div class="service-item reveal">
+      <div class="service-num">01</div>
+      <div class="service-title">Weddings &amp; Engagements</div>
+      <div class="service-desc">Full-day coverage of your most important day. From getting ready to last dance — every moment, every emotion.</div>
+    </div>
+    <div class="service-item reveal reveal-delay-1">
+      <div class="service-num">02</div>
+      <div class="service-title">Concerts &amp; Live Music</div>
+      <div class="service-desc">Energy, light, and movement. I live for the pit. Capturing performers and crowds in their most electric moments.</div>
+    </div>
+    <div class="service-item reveal reveal-delay-2">
+      <div class="service-num">03</div>
+      <div class="service-title">Portraits &amp; Headshots</div>
+      <div class="service-desc">Natural light portraiture for individuals, families, and professionals. Comfortable, candid, and true to you.</div>
+    </div>
+    <div class="service-item reveal reveal-delay-3">
+      <div class="service-num">04</div>
+      <div class="service-title">Sports &amp; Real Estate</div>
+      <div class="service-desc">High-speed action coverage and architectural photography that showcases space with clarity and intent.</div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section class="contact-section" id="contact">
+  <div class="contact-bg-text">Let's Work</div>
+  <div class="section-label reveal" style="justify-content:center;">Get In Touch</div>
+  <h2 class="contact-title reveal">Let's make something<br><em>unforgettable</em></h2>
+  <p class="contact-sub reveal">Available for bookings in Atlanta &amp; beyond</p>
+  <a href="mailto:hello@albertogodoy.com" class="contact-btn reveal">Book a Session</a>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p>© 2026 Alberto Godoy Photography</p>
+  <p>Atlanta, Georgia</p>
+  <p>Crafted with intention</p>
+</footer>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+  });
+
+  function animRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animRing);
+  }
+  animRing();
+
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      ring.style.width = '48px';
+      ring.style.height = '48px';
+      ring.style.borderColor = 'rgba(196,168,130,0.7)';
+    });
+    el.addEventListener('mouseleave', () => {
+      ring.style.width = '32px';
+      ring.style.height = '32px';
+      ring.style.borderColor = 'rgba(196,168,130,0.4)';
+    });
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal, .gallery-item');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Gallery filter
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const galleryItems = document.querySelectorAll('.gallery-item');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      galleryItems.forEach(item => {
+        const cat = item.dataset.cat;
+        if (filter === 'all' || cat === filter) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>
