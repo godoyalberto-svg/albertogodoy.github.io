@@ -569,6 +569,124 @@
   .reveal-delay-2 { transition-delay: 0.2s; }
   .reveal-delay-3 { transition-delay: 0.3s; }
   .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* =====================
+     RESPONSIVE / MOBILE
+     ===================== */
+
+  /* Tablet (max 1024px) */
+  @media (max-width: 1024px) {
+    .hero { padding: 0 2.5rem 4rem; }
+    .hero-title { font-size: clamp(2.8rem, 7vw, 5rem); }
+
+    .gallery-grid { columns: 2; column-gap: 1rem; }
+    .gallery-item { margin-bottom: 1rem; }
+
+    .about-strip { padding: 6rem 2.5rem; gap: 4rem; }
+
+    .services-grid { grid-template-columns: repeat(2, 1fr); }
+
+    .contact-section { padding: 7rem 2.5rem; }
+
+    .section-header { padding: 5rem 2.5rem 3rem; }
+  }
+
+  /* Mobile (max 768px) */
+  @media (max-width: 768px) {
+
+    /* Nav */
+    nav {
+      padding: 1.2rem 1.5rem !important;
+      flex-wrap: wrap;
+    }
+    .nav-links {
+      display: none;
+      flex-direction: column;
+      gap: 1.2rem;
+      width: 100%;
+      padding: 1.2rem 0 0.5rem;
+    }
+    .nav-links.open { display: flex; }
+    .nav-hamburger {
+      display: flex !important;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 10;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--gold);
+      transition: all 0.3s;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 0 1.5rem 3rem;
+      height: 100svh;
+    }
+    .hero-title { font-size: clamp(2.2rem, 10vw, 3.5rem); line-height: 1.1; }
+    .hero-subtitle { font-size: 0.75rem; letter-spacing: 0.15em; }
+    .hero-scroll { bottom: 2rem; }
+
+    /* Section headers */
+    .section-header { padding: 4rem 1.5rem 2rem; }
+    .section-label { font-size: 0.65rem; }
+    .section-title { font-size: clamp(1.8rem, 8vw, 3rem); }
+    .section-subtitle { font-size: 0.85rem; }
+
+    /* Gallery */
+    .gallery-grid { columns: 1; column-gap: 0; }
+    .gallery-item { margin-bottom: 0.6rem; }
+    .gallery-filter { gap: 0.5rem; padding: 1.5rem 1rem; flex-wrap: wrap; justify-content: center; }
+    .filter-btn { font-size: 0.65rem; padding: 0.4rem 0.9rem; letter-spacing: 0.1em; }
+    .gallery-section { padding-bottom: 3rem; }
+
+    /* About */
+    .about-strip {
+      grid-template-columns: 1fr !important;
+      padding: 4rem 1.5rem;
+      gap: 2.5rem;
+    }
+    .about-portrait { max-width: 340px; margin: 0 auto; }
+    .about-portrait-img { aspect-ratio: 3/4; }
+    .about-text h2 { font-size: clamp(1.8rem, 8vw, 2.8rem); }
+    .about-text p { font-size: 0.9rem; }
+    .about-stats { grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem; }
+    .stat-number { font-size: 2rem; }
+
+    /* Services */
+    .services-section { padding: 4rem 1.5rem; }
+    .services-grid { grid-template-columns: 1fr !important; }
+    .service-item { padding: 2rem 1.5rem; }
+
+    /* Contact */
+    .contact-section { padding: 5rem 1.5rem; }
+    .contact-bg-text { font-size: clamp(4rem, 20vw, 8rem); }
+    .contact-title { font-size: clamp(1.8rem, 8vw, 3rem); }
+    .contact-email { font-size: clamp(1rem, 5vw, 1.5rem); }
+
+    /* Footer */
+    footer { padding: 2rem 1.5rem; flex-direction: column; gap: 1rem; text-align: center; }
+
+    /* Dividers */
+    .section-divider { margin: 0 1.5rem; }
+
+    /* Hide custom cursor on touch */
+    .cursor, .cursor-follower { display: none !important; }
+  }
+
+  /* Small phones (max 480px) */
+  @media (max-width: 480px) {
+    .hero-title { font-size: clamp(1.9rem, 9vw, 2.8rem); }
+    .about-stats { grid-template-columns: 1fr 1fr; }
+    .gallery-filter { gap: 0.4rem; }
+    .filter-btn { font-size: 0.6rem; padding: 0.35rem 0.75rem; }
+  }
+
 </style>
 </head>
 <body>
@@ -586,7 +704,8 @@
       <text x="100" y="58" text-anchor="middle" font-family="'Tenor Sans', sans-serif" font-size="6" fill="#e8e2da" letter-spacing="4">ALBERTO GODOY</text>
     </svg>
   </a>
-  <ul class="nav-links">
+  <button class="nav-hamburger" id="hamburger" aria-label="Menu" style="display:none;background:none;border:none;"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="navLinks">
     <li><a href="#portfolio">Portfolio</a></li>
     <li><a href="#about">About</a></li>
     <li><a href="#services">Services</a></li>
@@ -874,5 +993,21 @@
     });
   });
 </script>
+
+  <script>
+    // Hamburger menu
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    if (hamburger && navLinks) {
+      hamburger.addEventListener('click', () => {
+        navLinks.classList.toggle('open');
+      });
+      // Close on link click
+      navLinks.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => navLinks.classList.remove('open'));
+      });
+    }
+  </script>
+
 </body>
 </html>
